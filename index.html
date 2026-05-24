@@ -1,0 +1,493 @@
+<!DOCTYPE html><script type="application/json" id="cowork-artifact-meta">
+{
+  "name": "Btc Drawdown Monitor",
+  "schemaVersion": 1
+}
+</script>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>BTC Drawdown Monitor — TON618Capital</title>
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4.5.0/dist/chart.umd.js" integrity="sha384-iU8HYtnGQ8Cy4zl7gbNMOhsDTTKX02BTXptVP/vqAWIaTfM7isw76iyZCsjL2eVi" crossorigin="anonymous"></script>
+<style>
+  :root {
+    --bg: #0d1117; --surface: #161b22; --border: #30363d;
+    --text: #e6edf3; --muted: #8b949e; --accent: #58a6ff;
+    --c-low: #1976d2; --c-mod: #388e3c; --c-elev: #fbc02d;
+    --c-high: #f57c00; --c-crit: #d32f2f;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body { background: var(--bg); color: var(--text); font-family: -apple-system, 'Segoe UI', sans-serif; font-size: 13px; }
+
+  header { background: var(--surface); border-bottom: 1px solid var(--border); padding: 12px 20px; display: flex; align-items: center; gap: 16px; }
+  header h1 { font-size: 15px; font-weight: 700; letter-spacing: .03em; }
+  header .sub { color: var(--muted); font-size: 11px; }
+  .price-chip { background: #21262d; border: 1px solid var(--border); border-radius: 6px; padding: 3px 10px; font-size: 13px; font-weight: 600; }
+  .badge { display: inline-block; padding: 2px 8px; border-radius: 4px; font-weight: 700; font-size: 11px; letter-spacing: .05em; }
+
+  main { padding: 16px 20px; display: grid; gap: 16px; }
+  .row2 { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+  .row3 { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 16px; }
+  .card { background: var(--surface); border: 1px solid var(--border); border-radius: 8px; padding: 16px; }
+  .card-title { font-size: 11px; text-transform: uppercase; letter-spacing: .08em; color: var(--muted); margin-bottom: 12px; font-weight: 600; }
+
+  .score-main { display: flex; align-items: center; gap: 24px; }
+  .score-num { font-size: 64px; font-weight: 800; line-height: 1; }
+  .score-right { flex: 1; }
+  .score-label { font-size: 20px; font-weight: 700; margin-bottom: 4px; }
+  .score-action { font-size: 12px; color: var(--muted); line-height: 1.5; max-width: 400px; }
+  .score-bar-wrap { margin-top: 12px; background: #21262d; border-radius: 6px; height: 8px; overflow: hidden; }
+  .score-bar-fill { height: 100%; border-radius: 6px; }
+
+  .cat-row { display: flex; align-items: center; gap: 10px; margin-bottom: 8px; }
+  .cat-name { width: 90px; font-size: 11px; color: var(--muted); text-align: right; flex-shrink: 0; }
+  .cat-bar { flex: 1; background: #21262d; border-radius: 4px; height: 14px; overflow: hidden; }
+  .cat-fill { height: 100%; border-radius: 4px; }
+  .cat-val { width: 36px; font-size: 12px; font-weight: 600; text-align: right; }
+  .cat-wt  { width: 32px; font-size: 10px; color: var(--muted); }
+
+  .chart-wrap { height: 120px; }
+
+  .signal-row { display: flex; align-items: center; justify-content: space-between; padding: 6px 0; border-bottom: 1px solid var(--border); }
+  .signal-row:last-child { border-bottom: none; }
+  .signal-name { font-size: 12px; }
+  .signal-note { font-size: 10px; color: var(--muted); margin-top: 2px; max-width: 220px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+
+  .metrics-table { width: 100%; border-collapse: collapse; }
+  .metrics-table th {
+    background: #0d1117; color: var(--muted); font-size: 10px; font-weight: 600;
+    text-transform: uppercase; letter-spacing: .06em; padding: 8px 10px;
+    text-align: left; border-bottom: 1px solid var(--border); white-space: nowrap;
+  }
+  .metrics-table td { padding: 6px 10px; border-bottom: 1px solid #21262d; font-size: 12px; vertical-align: middle; }
+  .metrics-table tr:last-child td { border-bottom: none; }
+  .metrics-table tr:hover td { background: #1c2128; }
+
+  .info-btn {
+    background: none; border: 1px solid var(--border); color: var(--muted);
+    border-radius: 50%; width: 20px; height: 20px; font-size: 11px; font-weight: 700;
+    cursor: pointer; display: flex; align-items: center; justify-content: center;
+    transition: all .15s; flex-shrink: 0;
+  }
+  .info-btn:hover { border-color: var(--accent); color: var(--accent); background: #1c2128; }
+
+  .modal-overlay {
+    display: none; position: fixed; inset: 0; background: rgba(0,0,0,.75);
+    z-index: 1000; align-items: center; justify-content: center;
+    backdrop-filter: blur(2px);
+  }
+  .modal-overlay.open { display: flex; }
+  .modal {
+    background: var(--surface); border: 1px solid var(--border); border-radius: 12px;
+    width: 480px; max-width: 95vw; max-height: 85vh; overflow-y: auto;
+    box-shadow: 0 24px 48px rgba(0,0,0,.6);
+    animation: slideUp .18s ease;
+  }
+  @keyframes slideUp { from { transform: translateY(16px); opacity: 0; } to { transform: translateY(0); opacity: 1; } }
+  .modal-header {
+    padding: 18px 20px 14px; border-bottom: 1px solid var(--border);
+    display: flex; align-items: flex-start; justify-content: space-between; gap: 12px;
+  }
+  .modal-title { font-size: 16px; font-weight: 700; margin-bottom: 4px; }
+  .modal-cat { font-size: 11px; color: var(--muted); }
+  .modal-close {
+    background: none; border: none; color: var(--muted); font-size: 20px;
+    cursor: pointer; padding: 0; line-height: 1; flex-shrink: 0;
+  }
+  .modal-close:hover { color: var(--text); }
+  .modal-body { padding: 18px 20px; display: grid; gap: 16px; }
+
+  .modal-score-row { display: flex; align-items: center; gap: 16px; }
+  .modal-score-big { font-size: 48px; font-weight: 800; line-height: 1; }
+  .modal-score-detail { flex: 1; }
+  .modal-score-label { font-size: 14px; font-weight: 700; margin-bottom: 6px; }
+  .modal-score-bar-wrap { background: #21262d; border-radius: 6px; height: 10px; overflow: hidden; margin-bottom: 4px; }
+  .modal-score-bar { height: 100%; border-radius: 6px; }
+
+  .modal-section-title { font-size: 10px; text-transform: uppercase; letter-spacing: .08em; color: var(--muted); font-weight: 600; margin-bottom: 6px; }
+  .modal-explain { font-size: 13px; line-height: 1.6; color: var(--text); }
+  .modal-raw { display: flex; gap: 24px; }
+  .modal-raw-item { }
+  .modal-raw-label { font-size: 10px; color: var(--muted); text-transform: uppercase; letter-spacing: .05em; }
+  .modal-raw-val { font-size: 16px; font-weight: 700; margin-top: 2px; }
+
+  .zone-bar { display: flex; border-radius: 6px; overflow: hidden; height: 20px; margin-bottom: 8px; }
+  .zone-seg { flex: 1; display: flex; align-items: center; justify-content: center; font-size: 9px; font-weight: 700; color: rgba(255,255,255,.8); }
+  .zone-labels { display: flex; justify-content: space-between; }
+  .zone-label { font-size: 9px; color: var(--muted); }
+
+  .modal-source { font-size: 10px; color: var(--muted); padding-top: 4px; border-top: 1px solid var(--border); }
+
+  footer { text-align: center; color: var(--muted); font-size: 10px; padding: 12px; border-top: 1px solid var(--border); }
+</style>
+</head>
+<body>
+
+<!-- Modal -->
+<div class="modal-overlay" id="modalOverlay" onclick="if(event.target===this)closeModal()">
+  <div class="modal" id="modal">
+    <div class="modal-header">
+      <div>
+        <div class="modal-title" id="mTitle">—</div>
+        <div class="modal-cat" id="mCat">—</div>
+      </div>
+      <button class="modal-close" onclick="closeModal()">✕</button>
+    </div>
+    <div class="modal-body">
+      <div class="modal-score-row">
+        <div class="modal-score-big" id="mScoreNum">—</div>
+        <div class="modal-score-detail">
+          <div class="modal-score-label" id="mScoreLabel">—</div>
+          <div class="modal-score-bar-wrap">
+            <div class="modal-score-bar" id="mScoreBar"></div>
+          </div>
+          <div style="font-size:10px;color:var(--muted)">out of 100  ·  higher = more drawdown risk</div>
+        </div>
+      </div>
+
+      <div class="modal-raw" id="mRaw"></div>
+
+      <div>
+        <div class="modal-section-title">Risk Zones</div>
+        <div class="zone-bar">
+          <div class="zone-seg" style="background:#1976d2">LOW</div>
+          <div class="zone-seg" style="background:#388e3c">MOD</div>
+          <div class="zone-seg" style="background:#fbc02d;color:#000">ELEV</div>
+          <div class="zone-seg" style="background:#f57c00">HIGH</div>
+          <div class="zone-seg" style="background:#d32f2f">CRIT</div>
+        </div>
+        <div class="zone-labels">
+          <span class="zone-label">0</span>
+          <span class="zone-label">35</span>
+          <span class="zone-label">50</span>
+          <span class="zone-label">65</span>
+          <span class="zone-label">80</span>
+          <span class="zone-label">100</span>
+        </div>
+      </div>
+
+      <div>
+        <div class="modal-section-title">What This Measures</div>
+        <div class="modal-explain" id="mExplain">—</div>
+      </div>
+
+      <div>
+        <div class="modal-section-title">Interpretation</div>
+        <div class="modal-explain" id="mInterp">—</div>
+      </div>
+
+      <div class="modal-source" id="mSource">—</div>
+    </div>
+  </div>
+</div>
+
+<header>
+  <div>
+    <h1>⬡ BTC DRAWDOWN MONITOR</h1>
+    <div class="sub">TON618Capital · 36-metric composite risk engine</div>
+  </div>
+  <div style="margin-left:auto;display:flex;align-items:center;gap:12px;">
+    <span class="price-chip" id="btcPrice">—</span>
+    <span class="sub" id="genTime">—</span>
+  </div>
+</header>
+
+<main>
+  <div class="row2">
+    <div class="card">
+      <div class="card-title">Composite Drawdown Risk Score</div>
+      <div class="score-main">
+        <div class="score-num" id="scoreNum">—</div>
+        <div class="score-right">
+          <div class="score-label" id="scoreLabel">—</div>
+          <div class="score-action" id="scoreAction">—</div>
+          <div class="score-bar-wrap">
+            <div class="score-bar-fill" id="scoreBar" style="width:0%"></div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="card">
+      <div class="card-title">Score History</div>
+      <div class="chart-wrap"><canvas id="histChart"></canvas></div>
+    </div>
+  </div>
+
+  <div class="row3">
+    <div class="card">
+      <div class="card-title">Category Scores</div>
+      <div id="catBars"></div>
+    </div>
+    <div class="card">
+      <div class="card-title">Top Risk Signals</div>
+      <div id="topSignals"></div>
+    </div>
+    <div class="card">
+      <div class="card-title">Key Readings</div>
+      <div id="keyReadings"></div>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card-title">All 36 Metrics — click ⓘ for detail</div>
+    <div id="metricsTableWrap"></div>
+  </div>
+</main>
+
+<footer id="footer">BTC Drawdown Monitor · TON618Capital</footer>
+
+<script>
+// ── DATA ──────────────────────────────────────────────────────────────────
+const DATA = {"generated":"2026-05-24 19:33 UTC","btc_price":76619.8666090415,"composite":{"score":37.2,"label":"MODERATE","color":"#388e3c","action":"MODERATE: Monitor closely. Maintain positioning but avoid excess leverage. Trail stops on leveraged positions."},"category_scores":{"On-Chain":32.4,"Derivatives":33.6,"Macro":43.2,"Sentiment":47.0,"Technical":45.8},"metrics":[{"id":"nupl","name":"NUPL","category":"On-Chain","unit":"ratio","raw_value":0.293069,"score":24,"source":"coinmetrics/CapMVRVCur","explain":"Net Unrealized Profit/Loss via MVRV. Zones: <0=bottom, 0-0.25=hope, 0.25-0.5=belief, 0.5-0.75=optimism, >0.75=euphoria. [NUPL=(MVRV-1)/MVRV. <0=bottom, 0.25=hope, 0.5=belief, 0.75=euphoria]"},{"id":"mvrv_z","name":"MVRV-Z Score","category":"On-Chain","unit":"ratio","raw_value":1.414565,"score":16,"source":"coinmetrics/CapMVRVCur","explain":"Market Value to Realized Value. <1=undervalued, 1-2=fair value, 2-3.5=overvalued, >3.5=extreme (historic tops 3.5-7.0). [Using MVRV ratio (Z-score proxy; CapRealUSD unavailable on free tier)]"},{"id":"puell","name":"Puell Multiple","category":"On-Chain","unit":"\u00d7","raw_value":1.156816,"score":26,"source":"coinmetrics/IssTotUSD","explain":"Daily miner revenue / 60d MA. <0.5=capitulation, 1-2=neutral, 2-4=elevated, >4=extreme top. [60d MA proxy (ideal: 365d)]"},{"id":"pi_cycle","name":"Pi Cycle Top","category":"On-Chain","unit":"gap%","raw_value":0.0,"score":50,"source":"coinmetrics/PriceUSD","explain":"Gap between 111DMA and 2\u00d7350DMA. Crossover = historic top signal within days. [Only 100d data; need 350+ for Pi Cycle]"},{"id":"reserve_risk","name":"Reserve Risk","category":"On-Chain","unit":"proxy","raw_value":0.332,"score":17,"source":"coinmetrics","explain":"MVRV \u00d7 price/365DMA proxy. High = confidence risk at elevated prices. [Proxy: (MVRV/3)\u00d7(price/365DMA/1.5); true Reserve Risk needs UTXO data]"},{"id":"rhodl","name":"RHODL Ratio","category":"On-Chain","unit":"proxy","raw_value":1.472,"score":27,"source":"coinmetrics","explain":"MVRV \u00d7 addr-trend proxy for short-term vs long-term holder dominance. [MVRV \u00d7 addr-trend proxy; true RHODL needs UTXO age bands]"},{"id":"sopr","name":"SOPR","category":"On-Chain","unit":"ratio","raw_value":0.9588,"score":19,"source":"coinmetrics/PriceUSD","explain":"7d/21d price ratio proxy for on-chain profit-taking. >1.05 = elevated profit realization. [7d/21d price ratio proxy; true SOPR needs UTXO spend data]"},{"id":"cdd","name":"Coin Days Destroyed","category":"On-Chain","unit":"spike","raw_value":0.5,"score":50,"source":"blockchain.com","explain":"7DMA/30DMA CDD ratio. Spikes signal LTH distribution near tops."},{"id":"exchange_inflows","name":"Exchange Net Inflows","category":"On-Chain","unit":"USD B","raw_value":0.0806,"score":40,"source":"coinmetrics/FlowInExUSD-FlowOutExUSD","explain":"Net BTC exchange flow (inflows-outflows). Positive = sell pressure. [7d avg net exchange flow: $+0.081B (positive=sell pressure)]"},{"id":"lth_supply","name":"Exchange Supply Delta","category":"On-Chain","unit":"%","raw_value":1.869,"score":49,"source":"coinmetrics/SplyExNtv","explain":"SplyExNtv 30d % change. Rising = distribution into strength. [Exchange supply 30d % change (rising=distribution risk)]"},{"id":"ssr","name":"Stablecoin Supply Ratio","category":"On-Chain","unit":"ratio","raw_value":0.5,"score":50,"source":"coingecko","explain":"BTC mktcap / stablecoin mktcap. High = less dry powder to buy BTC."},{"id":"aad","name":"Active Address Divergence","category":"On-Chain","unit":"spread","raw_value":6.09,"score":22,"source":"coinmetrics/AdrActCnt","explain":"Price vs addr 30d % spread. Bearish divergence if price up, addrs declining. [Price -2.1% vs Addr -8.2% (30d). Bearish if price\u2191 addr\u2193]"},{"id":"miner_position","name":"Miner Position Index","category":"On-Chain","unit":"\u00d7","raw_value":1.157,"score":31,"source":"coinmetrics/IssTotUSD","explain":"Issuance/60d MA proxy for miner sell pressure. [30d/60d issuance ratio proxy for miner selling pressure]"},{"id":"funding_rate","name":"Funding Rate","category":"Derivatives","unit":"rate/8h","raw_value":null,"score":50,"source":"CoinDesk MCP - API authorization error","explain":"Perp swap 8h funding. >0.05%/8h=elevated, >0.10%/8h=extreme washout risk."},{"id":"open_interest","name":"Open Interest","category":"Derivatives","unit":"USD B","raw_value":0.508,"score":21,"source":"CoinDesk futures OI OHLCV (Binance BTCUSDT perp, 2026-05-24)","explain":"BTC perp OI as % of market cap. Elevated = larger cascade liquidation risk. [OI_USD=7.67B, BTC mkt cap=1.51T. OI/mktcap=0.508%. Low-moderate leverage.]"},{"id":"futures_basis","name":"Futures Basis","category":"Derivatives","unit":"ann%","raw_value":1.49,"score":3,"source":"CoinDesk futures OHLCV vs btc_fetch spot (2026-05-24)","explain":"Annualized spot/futures basis. >20%=euphoric demand, backwardation=fear. [Futures close=76623 vs spot=76619.87. Annualized basis=1.49%. Near-zero premium.]"},{"id":"options_skew","name":"25D Options Skew","category":"Derivatives","unit":"%","raw_value":null,"score":50,"source":"Deribit/WebSearch - unavailable","explain":"Deribit 25-delta put/call IV skew. Positive=call premium=complacent longs."},{"id":"put_call_ratio","name":"Put/Call Ratio","category":"Derivatives","unit":"ratio","raw_value":null,"score":50,"source":"Deribit/WebSearch - unavailable","explain":"Deribit put/call OI ratio. Low=crowded calls/complacency."},{"id":"liquidation_clusters","name":"Liquidation Risk","category":"Derivatives","unit":"USD B","raw_value":"funding N/A, OI 0.51% of mktcap","score":30,"source":"OI+Funding derived (funding unavailable)","explain":"Cascade liquidation risk from OI size and leverage concentration. [OI at 0.51%, below 0.8% threshold. Funding unavailable. Conservative: moderate-low liquidation risk.]"},{"id":"iv_rv","name":"IV/RV Ratio","category":"Derivatives","unit":"ratio","raw_value":3.0,"score":31,"source":"WebSearch (CoinDesk May 22 2026)","explain":"Implied vs Realized Vol. Low IV vs high RV = market underpricing risk. [BTC IV at 7-month low ~38-40%. Estimated 30D RV ~35-37%. IV-RV spread ~+3%, slight premium.]"},{"id":"dxy","name":"DXY Index","category":"Macro","unit":"index","raw_value":99.324,"score":28,"source":"WebSearch (TradingEconomics 2026-05-22)","explain":"US Dollar Index. Rising DXY = macro headwind for BTC. [DXY at 99.32, between 95-100 range. Dollar index near flat YoY; moderate level, not a strong headwind.]"},{"id":"yield_10y","name":"10Y Treasury Yield","category":"Macro","unit":"%","raw_value":4.56,"score":52,"source":"FMP treasury-rates (2026-05-22)","explain":"Rapid yield spikes tighten liquidity. Sustained uptrend = BTC headwind. [10Y UST at 4.56%, elevated vs history. Between 4.5-5% interp band.]"},{"id":"fed_funds","name":"Fed Funds Rate","category":"Macro","unit":"%","raw_value":3.625,"score":48,"source":"WebSearch (Fed target range 3.5-3.75%, midpoint 3.625%)","explain":"Hike cycle = risk-asset headwind. Pivot = historically bullish BTC. [Fed held at 3.5-3.75% for third consecutive meeting. Effective rate 3.62% as of May 21.]"},{"id":"spx_correlation","name":"SPX Correlation 30d","category":"Macro","unit":"r","raw_value":0.74,"score":79,"source":"WebSearch (Phemex/Newhedge March-May 2026)","explain":"30d BTC-SPX rolling correlation. High = BTC vulnerable to equity selloffs. [BTC-SPY 30D correlation at 0.74; high positive correlation = significant macro contagion risk.]"},{"id":"global_m2","name":"Global M2 Growth","category":"Macro","unit":"YoY%","raw_value":4.57,"score":29,"source":"WebSearch (US M2 YoY March 2026)","explain":"Expanding global M2 = liquidity tailwind for BTC (3-6 month lead). [US M2 YoY +4.57% as of March 2026; positive growth supportive of BTC.]"},{"id":"usdt_issuance","name":"USDT Issuance","category":"Macro","unit":"USD B","raw_value":2.321,"score":23,"source":"coinmetrics/usdt/SplyCur","explain":"30d USDT supply change. Contraction = reduced crypto inflows. [USDT 30d change $+2.32B (negative=outflow=bearish)]"},{"id":"fear_greed","name":"Fear & Greed Index","category":"Sentiment","unit":"0-100","raw_value":50.0,"score":50,"source":"alternative.me","explain":"Composite sentiment. >75=extreme greed, >85 sustained=historic top proximity."},{"id":"social_volume","name":"Social Volume","category":"Sentiment","unit":"index","raw_value":null,"score":50,"source":"LunarCrush - subscription required","explain":"BTC social media volume. Extreme spikes near highs precede corrections."},{"id":"retail_lsr","name":"Retail Long/Short","category":"Sentiment","unit":"ratio","raw_value":1.0,"score":50,"source":"binance","explain":"Retail L/S ratio. >2.0=crowded longs, washout risk elevated."},{"id":"google_trends","name":"Google Trends BTC","category":"Sentiment","unit":"0-100","raw_value":40,"score":35,"source":"WebSearch (AltIndex, multiple sources May 2026)","explain":"Search interest 'Bitcoin'. Peak retail FOMO = cycle top proximity. [Bitcoin search interest described as normal. Estimated ~40/100, not peak FOMO.]"},{"id":"media_coverage","name":"Media Coverage","category":"Sentiment","unit":"index","raw_value":null,"score":50,"source":"FMP news - plan tier insufficient","explain":"Mainstream media BTC coverage. Positive surge near highs = distribution."},{"id":"weekly_rsi","name":"Weekly RSI","category":"Technical","unit":"0-100","raw_value":50.0,"score":50,"source":"coinmetrics","explain":"RSI(14) on weekly candles. >85 has marked every major BTC cycle top. [Need 105d, have 100d]"},{"id":"ma_200w_dev","name":"200W MA Deviation","category":"Technical","unit":"\u00d7","raw_value":2.016,"score":36,"source":"coinmetrics/PriceUSD","explain":"Price / 200-week MA ratio. >3.5\u00d7 historically precedes 70%+ drawdowns. [200W MA estimated ~$38,000; limited price history]"},{"id":"rsi_divergence","name":"Bearish RSI Divergence","category":"Technical","unit":"bool","raw_value":1,"score":60,"source":"coinmetrics/PriceUSD","explain":"Price higher high + RSI lower high on weekly = momentum divergence. [Bearish: price new high + RSI did not confirm]"},{"id":"volume_divergence","name":"Volume Divergence","category":"Technical","unit":"bool","raw_value":0.918,"score":45,"source":"CoinDesk spot OHLCV (Coinbase BTC-USD, 30D)","explain":"Price rising on declining 20d avg volume = weakening conviction. [7D avg vol=5599 BTC / 30D avg vol=6099 BTC. Ratio=0.918. Slight volume contraction with declining price.]"},{"id":"bollinger_width","name":"Bollinger Band Width","category":"Technical","unit":"%","raw_value":9.93,"score":38,"source":"coinmetrics/PriceUSD","explain":"4\u03c3/20DMA bandwidth. Extreme expansion after prolonged squeeze = vol exhaustion. [BB Width 9.9% (4\u03c3/20DMA). Extreme expansion after squeeze = risk]"}],"score_history":[{"timestamp":"2026-05-23 19:55 UTC","score":44.2,"label":"MODERATE","color":"#388e3c"},{"timestamp":"2026-05-24 00:43 UTC","score":41.5,"label":"MODERATE","color":"#388e3c"},{"timestamp":"2026-05-24 00:43 UTC","score":37.3,"label":"MODERATE","color":"#388e3c"},{"timestamp":"2026-05-24 19:33 UTC","score":37.2,"label":"MODERATE","color":"#388e3c"}]};
+
+// Full interpretations for modal
+const INTERP = {
+  nupl: "< 0: Bottom / Capitulation\n0 – 0.25: Hope (recovery phase)\n0.25 – 0.5: Belief\n0.5 – 0.75: Optimism / Complacency\n> 0.75: Euphoria — historic top zone",
+  mvrv_z: "< 1: Undervalued (buy zone)\n1 – 2: Fair value\n2 – 3.5: Overvalued\n3.5 – 7: Historic cycle tops\n> 7: Extreme — all-time peak territory",
+  puell: "< 0.5: Miner capitulation (buy signal)\n0.5 – 1: Recovering\n1 – 2: Neutral\n2 – 4: Elevated — tops form here\n> 4: Extreme — historic sell signal",
+  pi_cycle: "Gap > 0%: 111DMA below 2×350DMA (safe)\nGap = 0%: Crossover — top signal firing\nGap < 0%: 111DMA above 2×350DMA — CRITICAL\nHistoric accuracy: days from crossover to top",
+  reserve_risk: "< 0.2: Low risk, HODLers confident\n0.2 – 0.6: Moderate\n0.6 – 1.0: Elevated\n> 1.0: Extreme — historic tops",
+  rhodl: "Low: Short-term holders dominating (bearish)\nModerate: Balanced\nHigh: Long-term holders dominant (bullish)\nSpike in short-term = distribution risk",
+  sopr: "< 1.0: Spending at a loss (capitulation)\n= 1.0: Break-even\n1.0 – 1.05: Normal profit-taking\n> 1.05: Elevated profit realization\n> 1.1: Historic top proximity",
+  cdd: "Below 30d avg: Normal LTH behavior\n1.1–1.5× 30d avg: Mild LTH movement\n1.5–3× 30d avg: Significant distribution\n> 3× 30d avg: Historic top signal",
+  exchange_inflows: "Negative (outflows): Accumulation — bullish\nNear zero: Balanced (neutral)\n$0–$0.2B: Mild sell pressure\n$0.2–$1B: Elevated selling\n> $1B: Extreme distribution signal",
+  lth_supply: "Declining: HODLers accumulating (bullish)\n0–1%: Stable\n1–3%: Mild distribution\n3–6%: Significant distribution\n> 6%: Top-proximity distribution",
+  ssr: "Low SSR: Lots of stablecoin firepower (bullish)\nModerate: Balanced\nHigh: Less dry powder to buy BTC (bearish)\nHistoric tops correlate with high SSR",
+  aad: "Price up + Addrs up: Healthy bull signal\nPrice up + Addrs down: Bearish divergence\nPrice down + Addrs up: Accumulation (bullish)\nPrice down + Addrs down: Bearish confirmation",
+  miner_position: "< 0.6: Miners capitulating / selling heavily\n0.6 – 1.2: Neutral\n1.2 – 2.0: Elevated revenue / sell risk\n> 2.0: Miners at peak revenue — historic tops",
+  funding_rate: "< 0%: Shorts paying longs (bearish market)\n0 – 0.01%/8h: Neutral\n0.01 – 0.05%/8h: Mild long bias\n0.05 – 0.10%/8h: Elevated — caution\n> 0.10%/8h: Extreme — washout risk HIGH",
+  open_interest: "< 0.5% of mktcap: LOW\n0.5 – 1.0%: Moderate\n1.0 – 2.0%: Elevated leverage\n2.0 – 3.5%: High — cascade risk\n> 3.5%: Extreme — historic liquidation events",
+  futures_basis: "Backwardation (< 0%): Fear / spot premium\n0 – 10%: Normal contango\n10 – 20%: Elevated demand\n20 – 35%: Euphoric\n> 35%: Extreme — historic tops",
+  options_skew: "< -10%: Put premium — market pricing downside\n-10 – 0%: Moderate hedging\n0 – 10%: Mild call premium\n10 – 20%: Call complacency — caution\n> 20%: Extreme call bias — historic top signal",
+  put_call_ratio: "> 1.5: Heavy put buying — fearful market\n0.8 – 1.5: Balanced\n0.5 – 0.8: Mild call dominance\n0.3 – 0.5: Call speculation — caution\n< 0.3: Extreme call bias — top proximity",
+  liquidation_clusters: "Low OI + spread longs: LOW cascade risk\nHigh OI concentrated just above market: HIGH\nLarge OI = larger potential cascade",
+  iv_rv: "IV >> RV: Expensive options, hedging demand\nIV ≈ RV: Fair pricing\nIV < RV: Cheap options — market under-pricing risk\nIV << RV: Complacency — historic top proximity",
+  dxy: "< 95: Very weak USD — BTC tailwind\n95 – 100: Weak USD, supportive\n100 – 104: Neutral\n104 – 108: Strong USD — headwind\n> 108: Very strong USD — historic BTC headwind",
+  yield_10y: "< 3%: Low rates — risk assets supported\n3 – 4%: Moderate\n4 – 4.5%: Elevated\n4.5 – 5%: High — liquidity headwind\n> 5%: Very high — historic BTC risk-off trigger",
+  fed_funds: "0 – 1%: Accommodative — BTC bullish historically\n1 – 2.5%: Low — supportive\n2.5 – 3.5%: Moderate\n3.5 – 4.5%: Elevated\n> 5%: Restrictive — strong risk-asset headwind",
+  spx_correlation: "< 0: Negative correlation — BTC hedge\n0 – 0.3: Low — relatively independent\n0.3 – 0.5: Moderate\n0.5 – 0.7: High — equity selloffs hurt BTC\n> 0.7: Very high — BTC moves with stocks",
+  global_m2: "> 8% YoY: Expanding fast — strong BTC tailwind\n5 – 8%: Expanding\n2 – 5%: Moderate growth\n0 – 2%: Slowing\n< 0%: Contracting — BTC headwind (3-6mo lag)",
+  usdt_issuance: "> $2B/month: Strong inflow — bullish\n$0.5 – $2B: Moderate growth\n$0 – $0.5B: Slowing\nNegative: Contraction — reduced crypto demand\nLarge negative: Historic BTC drawdown precursor",
+  fear_greed: "0 – 25: Extreme Fear (buy signal historically)\n25 – 45: Fear\n45 – 55: Neutral\n55 – 75: Greed\n75 – 85: Extreme Greed — caution\n> 85 sustained: Historic top proximity",
+  social_volume: "< 0.5× avg: Subdued — fear or apathy\n0.5 – 1.0×: Below average\n1.0 – 1.5×: Normal\n1.5 – 2.5×: Elevated interest\n> 3×: Spike — historic top correlation",
+  retail_lsr: "< 0.5: Shorts dominate — potential squeeze\n0.5 – 1.0: Short-leaning\n1.0 – 1.5: Balanced\n1.5 – 2.0: Long-leaning\n> 2.0: Crowded longs — washout risk HIGH",
+  google_trends: "0 – 20: Low interest\n20 – 40: Below average\n40 – 60: Average\n60 – 75: Elevated — approaching mainstream\n> 75: Retail FOMO — historic top proximity\n> 90: Peak cycle mania signal",
+  media_coverage: "1 – 3: Low — media ignoring BTC\n3 – 5: Moderate\n5 – 7: High — mainstream attention\n7 – 9: Very high — CNBC/Bloomberg saturation\n> 9: Euphoric coverage — distribution signal",
+  weekly_rsi: "< 30: Oversold — historic buy zone\n30 – 50: Recovering\n50 – 70: Neutral\n70 – 85: Overbought\n> 85: Extreme — every major top since 2013",
+  ma_200w_dev: "< 1.0×: Trading below 200W MA (bottom zone)\n1.0 – 2.0×: Moderate bull\n2.0 – 3.0×: Extended bull\n3.0 – 3.5×: Danger zone\n> 3.5×: Precedes 70%+ drawdowns historically",
+  rsi_divergence: "False: No divergence — momentum confirming\nTrue: Bearish divergence detected\nBearish: Price higher high, RSI lower high on weekly\nLeading signal 2–6 weeks before tops historically",
+  volume_divergence: "False: Volume confirming price — healthy\nTrue: Bearish divergence (price rising on declining volume)\nConviction weakening — often precedes reversal",
+  bollinger_width: "< 5%: Squeeze — breakout imminent\n5 – 10%: Normal\n10 – 20%: Expansion\n20 – 30%: High expansion\n> 30%: Extreme — vol exhaustion, mean reversion likely",
+};
+
+// ── HELPERS ───────────────────────────────────────────────────────────────
+function scoreColor(s) {
+  if (s>=80) return '#d32f2f';
+  if (s>=65) return '#f57c00';
+  if (s>=50) return '#fbc02d';
+  if (s>=35) return '#388e3c';
+  return '#1976d2';
+}
+function scoreLabel(s) {
+  if (s>=80) return 'CRITICAL';
+  if (s>=65) return 'HIGH';
+  if (s>=50) return 'ELEVATED';
+  if (s>=35) return 'MODERATE';
+  return 'LOW';
+}
+function scoreCls(s) {
+  if (s>=80) return 'c-crit';
+  if (s>=65) return 'c-high';
+  if (s>=50) return 'c-elev';
+  if (s>=35) return 'c-mod';
+  return 'c-low';
+}
+function fmtRaw(v) {
+  if (typeof v !== 'number') return v;
+  if (Math.abs(v) < 0.0001) return v.toFixed(5);
+  if (Math.abs(v) < 0.01) return v.toFixed(4);
+  if (Math.abs(v) < 1) return v.toFixed(3);
+  if (Math.abs(v) < 100) return v.toFixed(2);
+  return v.toLocaleString('en-US', {maximumFractionDigits: 0});
+}
+
+// ── MODAL ─────────────────────────────────────────────────────────────────
+function openModal(metric) {
+  const s = metric.score;
+  document.getElementById('mTitle').textContent = metric.name;
+  document.getElementById('mCat').textContent = `${metric.category}  ·  Unit: ${metric.unit}`;
+  document.getElementById('mScoreNum').textContent = s;
+  document.getElementById('mScoreNum').style.color = scoreColor(s);
+  document.getElementById('mScoreLabel').textContent = scoreLabel(s);
+  document.getElementById('mScoreLabel').style.color = scoreColor(s);
+  const bar = document.getElementById('mScoreBar');
+  bar.style.width = s + '%';
+  bar.style.background = scoreColor(s);
+
+  document.getElementById('mRaw').innerHTML = `
+    <div class="modal-raw-item">
+      <div class="modal-raw-label">Raw Value</div>
+      <div class="modal-raw-val">${fmtRaw(metric.raw_value)}</div>
+    </div>
+    <div class="modal-raw-item">
+      <div class="modal-raw-label">Risk Score</div>
+      <div class="modal-raw-val" style="color:${scoreColor(s)}">${s} / 100</div>
+    </div>
+    <div class="modal-raw-item">
+      <div class="modal-raw-label">Signal</div>
+      <div class="modal-raw-val" style="color:${scoreColor(s)}">${scoreLabel(s)}</div>
+    </div>`;
+
+  document.getElementById('mExplain').textContent = metric.explain;
+  document.getElementById('mInterp').innerHTML = (INTERP[metric.id] || 'Interpretation not available.').replace(/\n/g, '<br>');
+  document.getElementById('mSource').textContent = `Data source: ${metric.source}`;
+
+  document.getElementById('modalOverlay').classList.add('open');
+}
+function closeModal() {
+  document.getElementById('modalOverlay').classList.remove('open');
+}
+document.addEventListener('keydown', e => { if (e.key === 'Escape') closeModal(); });
+
+// ── RENDER ────────────────────────────────────────────────────────────────
+const D = DATA;
+const C = D.composite;
+
+document.getElementById('btcPrice').textContent = `BTC $${D.btc_price.toLocaleString('en-US',{maximumFractionDigits:0})}`;
+document.getElementById('genTime').textContent = D.generated;
+
+document.getElementById('scoreNum').textContent = C.score.toFixed(1);
+document.getElementById('scoreNum').style.color = scoreColor(C.score);
+document.getElementById('scoreLabel').textContent = C.label;
+document.getElementById('scoreLabel').style.color = scoreColor(C.score);
+document.getElementById('scoreAction').textContent = C.action;
+const bar = document.getElementById('scoreBar');
+bar.style.width = C.score + '%';
+bar.style.background = scoreColor(C.score);
+
+// Category bars
+const cats = D.category_scores;
+const weights = {"On-Chain":"40%","Derivatives":"25%","Technical":"20%","Macro":"10%","Sentiment":"5%"};
+const catEl = document.getElementById('catBars');
+Object.entries(cats).forEach(([cat, val]) => {
+  const div = document.createElement('div');
+  div.className = 'cat-row';
+  div.innerHTML = `
+    <span class="cat-name">${cat}</span>
+    <div class="cat-bar"><div class="cat-fill" style="width:${val}%;background:${scoreColor(val)}"></div></div>
+    <span class="cat-val" style="color:${scoreColor(val)}">${val.toFixed(1)}</span>
+    <span class="cat-wt">${weights[cat]||''}</span>`;
+  catEl.appendChild(div);
+});
+
+// Top signals
+const sorted = [...D.metrics].sort((a,b) => b.score - a.score).slice(0, 7);
+const sigEl = document.getElementById('topSignals');
+sorted.forEach(m => {
+  const div = document.createElement('div');
+  div.className = 'signal-row';
+  div.style.cursor = 'pointer';
+  div.onclick = () => openModal(m);
+  div.innerHTML = `
+    <div>
+      <div class="signal-name">${m.name} <span style="font-size:10px;color:var(--muted)">[${m.category}]</span></div>
+      <div class="signal-note">${m.explain}</div>
+    </div>
+    <span style="font-weight:700;font-size:13px;color:${scoreColor(m.score)}">${m.score}</span>`;
+  sigEl.appendChild(div);
+});
+
+// Key readings
+const keyItems = [
+  {label:'BTC Price', val:`$${D.btc_price.toLocaleString('en-US',{maximumFractionDigits:0})}`},
+  {label:'10Y Yield', val:`${D.metrics.find(m=>m.id==='yield_10y')?.raw_value}%`, id:'yield_10y'},
+  {label:'DXY', val:`${D.metrics.find(m=>m.id==='dxy')?.raw_value}`, id:'dxy'},
+  {label:'Fed Funds', val:`${D.metrics.find(m=>m.id==='fed_funds')?.raw_value}%`, id:'fed_funds'},
+  {label:'MVRV', val:`${D.metrics.find(m=>m.id==='mvrv_z')?.raw_value?.toFixed(2)}×`, id:'mvrv_z'},
+  {label:'NUPL', val:`${D.metrics.find(m=>m.id==='nupl')?.raw_value?.toFixed(3)}`, id:'nupl'},
+  {label:'Puell', val:`${D.metrics.find(m=>m.id==='puell')?.raw_value?.toFixed(2)}×`, id:'puell'},
+  {label:'OI (Binance)', val:`${D.metrics.find(m=>m.id==='open_interest')?.raw_value?.toFixed(2)}% mktcap`, id:'open_interest'},
+  {label:'200W MA Dev', val:`${D.metrics.find(m=>m.id==='ma_200w_dev')?.raw_value?.toFixed(2)}×`, id:'ma_200w_dev'},
+  {label:'Global M2 YoY', val:`~${D.metrics.find(m=>m.id==='global_m2')?.raw_value}%`, id:'global_m2'},
+  {label:'SPX Corr 30d', val:`${D.metrics.find(m=>m.id==='spx_correlation')?.raw_value?.toFixed(2)}`, id:'spx_correlation'},
+];
+const krEl = document.getElementById('keyReadings');
+keyItems.forEach(item => {
+  const metric = item.id ? D.metrics.find(m=>m.id===item.id) : null;
+  const s = metric?.score;
+  const div = document.createElement('div');
+  div.className = 'signal-row';
+  if (metric) { div.style.cursor = 'pointer'; div.onclick = () => openModal(metric); }
+  div.innerHTML = `<span style="font-size:12px;color:var(--muted)">${item.label}</span>
+    <span style="font-weight:700;font-size:13px;${s !== undefined ? 'color:'+scoreColor(s) : ''}">${item.val}</span>`;
+  krEl.appendChild(div);
+});
+
+// History chart
+const hist = D.score_history;
+const histCtx = document.getElementById('histChart').getContext('2d');
+new Chart(histCtx, {
+  type: 'line',
+  data: {
+    labels: hist.map(h => h.timestamp.split(' ')[0]),
+    datasets: [{
+      data: hist.map(h => h.score),
+      borderColor: '#58a6ff', backgroundColor: 'rgba(88,166,255,0.1)',
+      fill: true, tension: 0.3, pointRadius: 4,
+      pointBackgroundColor: hist.map(h => scoreColor(h.score)), borderWidth: 2
+    }]
+  },
+  options: {
+    responsive: true, maintainAspectRatio: false,
+    plugins: { legend: { display: false }, tooltip: {
+      callbacks: { label: ctx => `Score: ${ctx.parsed.y} — ${hist[ctx.dataIndex]?.label}` }
+    }},
+    scales: {
+      x: { ticks: { color: '#8b949e', font: { size: 10 } }, grid: { color: '#21262d' } },
+      y: { min: 0, max: 100, ticks: { color: '#8b949e', font: { size: 10 } }, grid: { color: '#21262d' },
+           afterBuildTicks: ax => { ax.ticks = [0,35,50,65,80,100].map(v=>({value:v})); } }
+    }
+  }
+});
+
+// Metrics table
+const wrap = document.getElementById('metricsTableWrap');
+const table = document.createElement('table');
+table.className = 'metrics-table';
+table.innerHTML = `<thead><tr>
+  <th>#</th><th>Metric</th><th>Category</th><th>Unit</th><th>Raw</th><th>Score</th><th>Signal</th><th></th>
+</tr></thead>`;
+const tbody = document.createElement('tbody');
+
+const catOrder = ['On-Chain','Derivatives','Macro','Sentiment','Technical'];
+const ordered = catOrder.flatMap(cat => D.metrics.filter(m => m.category === cat));
+
+ordered.forEach((m, i) => {
+  const s = m.score;
+  const lbls = [[80,'CRIT'],[65,'HIGH'],[50,'ELEV'],[35,'MOD'],[0,'LOW']];
+  const lbl = lbls.find(([t]) => s >= t)[1];
+  const tr = document.createElement('tr');
+  tr.innerHTML = `
+    <td style="color:var(--muted)">${i+1}</td>
+    <td style="font-weight:600">${m.name}</td>
+    <td style="color:var(--muted);font-size:11px">${m.category}</td>
+    <td style="color:var(--muted);font-size:11px">${m.unit}</td>
+    <td style="font-family:monospace">${fmtRaw(m.raw_value)}</td>
+    <td style="font-weight:700;color:${scoreColor(s)}">${s}</td>
+    <td><span class="badge" style="background:${scoreColor(s)}22;color:${scoreColor(s)}">${lbl}</span></td>
+    <td><button class="info-btn" title="View detail">ⓘ</button></td>`;
+  tr.querySelector('.info-btn').addEventListener('click', (e) => {
+    e.stopPropagation();
+    openModal(m);
+  });
+  tbody.appendChild(tr);
+});
+table.appendChild(tbody);
+wrap.appendChild(table);
+
+document.getElementById('footer').textContent =
+  `BTC Drawdown Monitor · TON618Capital · Generated: ${D.generated} · Score: ${C.score} ${C.label}`;
+</script>
+</body>
+</html>
