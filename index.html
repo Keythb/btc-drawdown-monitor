@@ -154,182 +154,187 @@
     <div class="card"><div class="card-title">Key Readings</div><div id="keyReadings"></div></div>
   </div>
   <div class="card"><div class="card-title">All 36 Metrics — click ⓘ for detail</div><div id="metricsTableWrap"></div></div>
-  <div class="card" id="narrativeCard"><div class="card-title">Daily Risk Briefing</div><div id="narrativeBody" style="white-space:pre-wrap;font-size:12.5px;line-height:1.65;color:var(--text);"><!--NARRATIVE_START-->TON618 CAPITAL
-BTC DRAWDOWN MONITOR -- DAILY RISK NARRATIVE
-Date: 2026-08-03 (UTC)   BTC: $63,445.68   Composite: 32.0/100 [LOW]
+  <div class="card" id="narrativeCard"><div class="card-title">Daily Risk Briefing</div><div id="narrativeBody" style="white-space:pre-wrap;font-size:12.5px;line-height:1.65;color:var(--text);"><!--NARRATIVE_START-->TON618 CAPITAL -- BTC DRAWDOWN MONITOR
+Daily Risk Narrative -- 2026-08-04 (data generated 10:07 UTC)
+Composite: 32.1/100 [LOW]   BTC $63,460.05
 
-------------------------------------------------------------
+------
 
 EXECUTIVE SUMMARY
 
-Composite drawdown risk reads 32.0/100 [LOW], down 0.2 from 32.2 [LOW] on
-2026-08-02. The tier is unchanged and the daily move is inside noise; the
-signal today is not the level but its composition. Valuation-based on-chain
-risk continues to bleed lower while positioning and stablecoin-supply risk
-sit near the top of their ranges. The model is registering a cheap asset
-held by a crowded, under-funded buyer base.
+The composite printed 32.1/100 versus 32.0 yesterday, a change of +0.1 and
+the sixty-ninth entry in the score history. That is not a move; it is the
+absence of one. The reading has held inside the LOW band with no category
+rotating enough to matter, and the day&#x27;s genuine information is in the
+composition rather than the level.
 
-The single most important fact behind the number: price is sitting on the
-200-week moving average (deviation 0.998, i.e. 0.2 percent below it, implying
-a 200w MA near $63,570). That is what is suppressing the technical and
-on-chain blocks -- historically a low-risk location -- while it simultaneously
-concentrates the consequences of a break.
+What is doing the work underneath is a split. Valuation and long-horizon
+holder behavior are as benign as this model measures them -- 200-week
+deviation scores 10, reserve risk 10, MVRV Z 12, RHODL 15 -- while the
+positioning and plumbing series are the ones carrying risk: USDT issuance
+at 86, retail long-short at 62, RSI divergence at 60, put-call at 59. The
+composite is low because the heavy 40 percent on-chain block (26.1) is
+pinning it there, not because every input agrees.
 
-  Composite        32.0 / 100      LOW      (prior 32.2, change -0.2)
-  Distance to MODERATE tier (&gt;=35)         3.0 points
+Category scores:
+
+  On-Chain       26.1   weight 40%
+  Derivatives    35.4   weight 25%
+  Technical      34.8   weight 20%
+  Macro          42.3   weight 10%
+  Sentiment      33.0   weight  5%
+
+------
 
 INVESTMENT CONTEXT
 
-  Category         Score    Weight   Contribution
-  On-Chain          26.3      40%       10.5
-  Derivatives       34.7      25%        8.7
-  Technical         34.4      20%        6.9
-  Macro             41.3      10%        4.1
-  Sentiment         35.6       5%        1.8
-                                        ----
-  Composite                             32.0
+Price at $63,460 sits essentially on the 200-week moving average, with the
+deviation ratio at 0.995. The model scores that as benign, and on a
+valuation basis it is -- this is the zone where realized-value metrics
+stop flashing expensive. It is also, mechanically, a level with no cushion
+beneath it in the same metric: the score is low because price is at the
+mean, not because price is far above a floor.
 
-Macro is the highest-scoring category (41.3) but carries only a 10 percent
-weight, so it cannot move the composite on its own. On-Chain at 26.3 carries
-40 percent and is doing the work of holding the composite in LOW. That is the
-structural asymmetry to hold in mind: the composite is a leveraged bet on the
-on-chain valuation block staying benign.
+Macro is the highest-scoring category at 42.3 and the only one within
+reach of the MODERATE band on its own. Ten-year at 4.75 (48) and the DXY
+proxy at 99.3 (34) frame a backdrop that is restrictive but not
+deteriorating, with fed funds at 3.63 scoring a benign 22. SPX correlation
+at 0.318 (37) means Bitcoin is trading with equities enough to import
+their risk but not so tightly that it has lost its own signal. Macro
+carries only a 10 percent weight, so its elevation is diagnostic rather
+than decisive.
+
+Sentiment is where the model and the tape disagree in an interesting way.
+Fear and greed printed 25 -- fear -- scoring a benign 15, while retail
+long-short sits at 1.64, scoring 62. Retail is stating caution and
+positioning long anyway. That combination is the standard setup for a
+liquidation cascade that starts from a sentiment reading nobody would call
+frothy.
+
+------
 
 RISK ANALYSIS
 
-Key risk drivers (high score = high risk):
+USDT issuance at 86 is the highest single score in the model and the one
+worth naming first. The value of -4.03 is a contraction in the stablecoin
+issuance pace, which is the model&#x27;s proxy for marginal dollars arriving to
+bid. Reduced minting does not force price lower on its own; it removes the
+buyer that absorbs supply. Paired with a composite this low, it is the
+clearest known risk on the sheet, and it has been the top driver rather
+than a one-day artifact.
 
-  usdt_issuance         86     -4.021 pct     stablecoin supply contracting
-  retail_lsr            72      1.93          retail long/short ratio
-  rsi_divergence        60      1             bearish divergence present
-  put_call_ratio        58      0.532         call-skewed option OI
-  cdd                   50      0.5           neutral default, no live feed
+Retail long-short at 1.64 (62) and put-call at 0.517 (59) describe the
+same posture from two venues. Retail accounts are net long by a wide
+margin on OKX, and Deribit options open interest is call-heavy. Skew
+supports this: 25-delta calls at 29.7 IV against puts at 33.8 gives a
+-4.05 reading (37), so puts still carry a premium even as call open
+interest dominates. The market is paying for downside protection while
+positioning for upside -- a hedged crowd is less fragile than an unhedged
+one, which is why derivatives lands at 35.4 rather than higher.
 
-Key support (low score = benign):
+The leverage complex itself is contained. Perpetual open interest at 6,029
+BTC scores 29, funding at 0.001463 scores 26, and the September basis at
+4.6 percent annualized scores 26. None of that is a stretched carry trade.
+Implied over realized at 1.031 (39) means options are priced roughly at
+delivered volatility with no meaningful event premium -- protection is
+cheap in relative terms if a position needs it.
 
-  ma_200w_dev           10      0.998         price at the 200-week MA
-  reserve_risk          10      0.197         long-term holder conviction high
-  mvrv_z                12      1.20          no valuation froth
-  nupl                  17      0.168         aggregate unrealized profit thin
-  fear_greed            18      28            Fear
+RSI divergence at 60 is the technical caution, and CDD at 50 is a
+neutral-default rather than a live read (see disclosures). Long-term
+holder and profit-taking series are quiet: NUPL, SOPR, and RHODL are all
+in the benign block that is holding on-chain at 26.1.
 
-The tension is explicit. USDT issuance at -4.0 percent is the model&#x27;s single
-worst reading (86/100): stablecoin supply is shrinking, which removes the
-marginal dollar of spot bid. Against that, retail sits net long at a 1.93
-long/short ratio -- crowded on the same side that the funding for that side
-is draining. A put/call ratio of 0.532 says option open interest is
-call-heavy, confirming the same directional crowding through a second lens.
-
-The offset is that nobody is paid much to be there. MVRV Z at 1.20 and NUPL
-at 0.168 mean the aggregate unrealized profit cushion is thin, which
-historically limits the fuel available for a reflexive liquidation cascade --
-holders who are not deep in profit have less to defend. Reserve risk at 0.197
-says long-term holders are not distributing. Fear and Greed at 28 is Fear;
-sentiment is not the froth that precedes a top.
-
-Derivatives at 34.7 sits mid-range: perp open interest at 6.13 (score 30) and
-funding at 0.00183 (score 26) are unremarkable, and futures basis at 4.53
-percent annualized is calm carry, not speculative excess. IV/RV at 1.073
-(score 35) means implied is trading a modest premium to a 30.1 realized --
-options are not cheap but they are not pricing an event either. Skew at -5.05
-(25d call 30.7 vs put 35.7) shows the standard downside bid.
-
-Macro at 41.3 reflects the 10-year at 4.68 percent (score 48) and a DXY proxy
-at 99.2 (score 34); SPX correlation at 0.237 is low enough that BTC is not
-currently a levered equity proxy.
+------
 
 SCENARIO FRAMEWORK
 
-Base case -- composite holds LOW, 32 to 35 (probability approximately 55 pct).
-Price ranges around the 200-week MA. On-chain valuation stays benign, USDT
-issuance stays negative but does not accelerate. Requires no new input. A
-drift to 34-35 is achievable on derivatives drift alone without any regime
-change.
+Base case -- composite holds 28 to 38, LOW to low-MODERATE (roughly 60
+percent). Requires no change in the on-chain block. The composite has moved
+0.1 point in a day and the heavy category is the stable one; drift, not
+break, is the default.
 
-Bear case -- composite crosses into MODERATE, 35 to 45 (approximately 30 pct).
-Requires the 200-week MA to fail. A decisive break below roughly $63,500 turns
-ma_200w_dev from the model&#x27;s strongest support (10) into a mid-to-high
-reading, and the technical block would carry the composite up 2 to 4 points on
-its own. A further contraction in stablecoin supply, or retail_lsr staying
-above 1.9 into a falling tape, adds the rest. Mechanically, the On-Chain block
-must rise from 26.3 to about 33.8 -- or Derivatives from 34.7 to about 46.7 --
-to move the composite 3 points alone. Both blocks contributing partially is
-the realistic route.
+Escalation -- composite crosses 35 into MODERATE (roughly 25 percent). The
+composite needs +2.9. Given the 40 percent weight, on-chain alone would
+have to add about 7 points to do it single-handedly. The realistic path is
+narrower: a loss of the 200-week average sends the deviation score up from
+10, which drags on-chain and technical together, and the long-side retail
+positioning at 1.64 supplies the liquidation fuel to accelerate it. Watch
+$63,000 -- the 200-week area -- as the trigger, not the composite.
 
-Bull case -- composite retreats toward 28 to 30 (approximately 15 pct).
-Requires USDT issuance to turn positive (the 86 reading is the largest single
-point of recoverable risk in the model) alongside a retail long/short
-unwind back toward 1.2-1.4. Valuation metrics are already near their floors
-and have little room to contribute further, so a decline from here has to
-come from positioning and liquidity normalizing, not from cheapness.
+Deterioration -- composite above 50, ELEVATED (roughly 10 percent). Needs
+a second driver on top of the first: USDT issuance staying contractionary
+while a technical break forces holders who have been quiet since the
+history began. A macro shock -- ten-year through 5 percent, dollar
+extending -- would only add about 1 point at the 10 percent weight, so
+macro is a catalyst for the other categories rather than a route to
+ELEVATED on its own.
 
-Tail -- a fast break of the 200-week MA on a stablecoin-supply air pocket is
-the configuration that would produce a multi-point composite jump in a single
-session rather than the gradual drift the base case assumes. It is not the
-modal outcome, but it is the one the current composition makes possible.
+Improvement -- composite below 28 (roughly 5 percent). Requires stablecoin
+issuance turning positive and retail positioning flattening. Both are
+observable before the composite reflects them.
+
+------
 
 RECOMMENDATION
 
-Maintain current exposure. A 32.0 LOW composite does not justify de-risking,
-and the valuation block genuinely supports the reading rather than merely
-lagging it.
+Maintain existing exposure. A 32.1 LOW composite with on-chain at 26.1 does
+not support de-risking, and the valuation block is the most reliable part
+of this model.
 
-Treat the 200-week moving average near $63,570 as the operative trigger, not
-the composite score. The model is at LOW because price is at that level; a
-sustained close below it is the event that changes the numbers, and waiting
-for the composite to print 35 will mean acting after the move. Set the review
-trip-wire on the level, not the score.
+Treat $63,000 as the level that changes the analysis. Price is on the
+200-week average now; a decisive loss of it converts two categories at once
+and is the single fastest path to a tier change. That is a price trigger
+to pre-commit to, not a composite trigger to wait for -- the composite will
+confirm after the fact.
 
-Do not add on the Fear reading alone. Fear and Greed at 28 with retail
-long/short at 1.93 is a contradiction -- surveyed sentiment is fearful while
-actual positioning is crowded long. Positioning is the more reliable of the
-two, and it argues against treating the fear print as a contrarian entry.
+With implied at 1.031 of realized, downside protection is priced at fair
+value rather than at a fear premium. If a position requires a hedge in the
+next month, the cost of putting it on is not the obstacle today. That
+window closes if realized volatility expands.
 
-Monitor stablecoin issuance daily. At -4.0 percent it is both the highest-risk
-input and the most informative one; its turn -- in either direction -- will
-lead the composite.
+Do not read the 25 fear-and-greed print as a contrarian buy signal while
+retail long-short sits at 1.64. Stated fear and long positioning are not
+the same thing, and the model scores the positioning, not the survey.
+
+------
 
 DISCLOSURES
 
-Data generated 2026-08-03 10:06 UTC. Composite is a weighted blend of 36
-metrics: On-Chain 40 pct, Derivatives 25 pct, Technical 20 pct, Macro 10 pct,
-Sentiment 5 pct. Tier bands: LOW below 35, MODERATE 35-50, ELEVATED 50-65,
-HIGH 65-80, CRITICAL above 80. History: 68 entries in score_history.
+Feed status: 36 metrics -- 30 live, 4 carried forward, 2 neutral-default.
 
-Feed status: 36 metrics -- 30 live, 4 carried, 2 neutral-default.
-
-Carried forward from the prior snapshot (no free HTTP source exists on their
+Carried forward from the prior snapshot (no free HTTP source on their
 existing basis; these are permanent carries, not new feed failures):
-  global_m2         3.4      score 27
-  social_volume     37       score 29
-  google_trends     37       score 29
-  media_coverage    35       score 30
+global_m2, social_volume, google_trends, media_coverage. Their contribution
+to today&#x27;s composite is yesterday&#x27;s information. No normally-live metric
+carried today; overlay_prefetch reported live=13, carried=4, failed=0.
 
-Neutral-default (no live source; scored at a neutral value rather than a
-carried one):
-  cdd                        score 50
-  volume_divergence
+Neutral-default (no live value, scored at the neutral midpoint rather than
+carried): cdd, volume_divergence. CDD appears in the driver list at 50 for
+this reason -- that 50 is the absence of a reading, not a measurement of
+elevated coin-days destroyed. It should not be read as a risk signal.
 
-Consequence for the reader: three of the four carried metrics sit in the
-Sentiment block, which carries a 5 pct weight, so their staleness is
-materially bounded. global_m2 sits in Macro (10 pct weight) and is the more
-consequential carry -- the liquidity input to this reading is not fresh today.
-cdd at a neutral 50 appears in the key-drivers list above; it is a placeholder,
-not an observation, and should not be read as evidence of coin-days-destroyed
-activity. Overlay prefetch reported live=13, carried=4, failed=0 -- no
-normally-live feed failed today.
+Practical effect: the sentiment category (5 percent weight) is built partly
+on stale social and search data, and the macro category (10 percent)
+includes a carried global M2. The reader should discount any sentiment or
+liquidity inference accordingly. The on-chain, derivatives, and technical
+blocks -- 85 percent of the composite by weight -- are live apart from the
+two neutral-defaults noted above.
 
-This material is produced by TON618 Capital for internal research purposes and
-is not investment advice, an offer, or a solicitation. It is not authored by a
-CFA charterholder. Model outputs are estimates derived from third-party data
-that may be incomplete, delayed, or revised, and carry model risk. Past
-readings do not predict future results. Digital assets are volatile and may
-lose value.<!--NARRATIVE_END--></div></div>
+The DXY input is an Alpha Vantage EURUSD-derived proxy, not the index
+itself. Skew, implied volatility, put-call, and basis are Deribit; open
+interest and funding are Crypto.com; retail long-short is OKX. Single-venue
+readings carry single-venue idiosyncrasy.
+
+This monitor is a risk-measurement tool. It describes the current
+distribution of observable conditions; it does not forecast returns, and a
+LOW composite is a statement about present conditions rather than a
+prediction that they persist. Not investment advice. For TON618 Capital
+internal use.<!--NARRATIVE_END--></div></div>
 </main>
 <footer id="footer">BTC Drawdown Monitor · TON618Capital</footer>
 <script>
 // ── DATA ──────────────────────────────────────────────────────────────────
-const DATA = {"generated":"2026-08-03 10:06 UTC","btc_price":63445.6829658095,"composite":{"score":32.0,"label":"LOW","color":"#1976d2","action":"LOW: Favorable conditions. Full positioning appropriate. Bull market signals dominant."},"category_scores":{"On-Chain":26.3,"Derivatives":34.7,"Macro":41.3,"Sentiment":35.6,"Technical":34.4},"metrics":[{"id":"nupl","name":"NUPL","category":"On-Chain","unit":"ratio","raw_value":0.167981,"score":17,"source":"coinmetrics/CapMVRVCur","explain":"Net Unrealized Profit/Loss via MVRV. Zones: <0=bottom, 0-0.25=hope, 0.25-0.5=belief, 0.5-0.75=optimism, >0.75=euphoria. [NUPL=(MVRV-1)/MVRV. <0=bottom, 0.25=hope, 0.5=belief, 0.75=euphoria]"},{"id":"mvrv_z","name":"MVRV-Z Score","category":"On-Chain","unit":"ratio","raw_value":1.201895,"score":12,"source":"coinmetrics/CapMVRVCur","explain":"Market Value to Realized Value. <1=undervalued, 1-2=fair value, 2-3.5=overvalued, >3.5=extreme (historic tops 3.5-7.0). [Using MVRV ratio (Z-score proxy; CapRealUSD unavailable on free tier)]"},{"id":"puell","name":"Puell Multiple","category":"On-Chain","unit":"×","raw_value":1.017485,"score":21,"source":"coinmetrics/IssTotUSD","explain":"Daily miner revenue / 60d MA. <0.5=capitulation, 1-2=neutral, 2-4=elevated, >4=extreme top. [60d MA proxy (ideal: 365d)]"},{"id":"pi_cycle","name":"Pi Cycle Top","category":"On-Chain","unit":"gap%","raw_value":59.01,"score":26,"source":"coinmetrics/PriceUSD","explain":"Gap between 111DMA and 2×350DMA. Crossover = historic top signal within days. [Gap to crossover: 59.0% (0%=signal)]"},{"id":"reserve_risk","name":"Reserve Risk","category":"On-Chain","unit":"proxy","raw_value":0.197,"score":10,"source":"coinmetrics","explain":"MVRV × price/365DMA proxy. High = confidence risk at elevated prices. [Proxy: (MVRV/3)×(price/365DMA/1.5); true Reserve Risk needs UTXO data]"},{"id":"rhodl","name":"RHODL Ratio","category":"On-Chain","unit":"proxy","raw_value":1.24,"score":21,"source":"coinmetrics","explain":"MVRV × addr-trend proxy for short-term vs long-term holder dominance. [MVRV × addr-trend proxy; true RHODL needs UTXO age bands]"},{"id":"sopr","name":"SOPR","category":"On-Chain","unit":"ratio","raw_value":0.9918,"score":31,"source":"coinmetrics/PriceUSD","explain":"7d/21d price ratio proxy for on-chain profit-taking. >1.05 = elevated profit realization. [7d/21d price ratio proxy; true SOPR needs UTXO spend data]"},{"id":"cdd","name":"Coin Days Destroyed","category":"On-Chain","unit":"spike","raw_value":0.5,"score":50,"source":"blockchain.com","explain":"7DMA/30DMA CDD ratio. Spikes signal LTH distribution near tops."},{"id":"exchange_inflows","name":"Exchange Net Inflows","category":"On-Chain","unit":"USD B","raw_value":0.0965,"score":41,"source":"coinmetrics/FlowInExUSD-FlowOutExUSD","explain":"Net BTC exchange flow (inflows-outflows). Positive = sell pressure. [7d avg net exchange flow: $+0.096B (positive=sell pressure)]"},{"id":"lth_supply","name":"Exchange Supply Delta","category":"On-Chain","unit":"%","raw_value":0.814,"score":41,"source":"coinmetrics/SplyExNtv","explain":"SplyExNtv 30d % change. Rising = distribution into strength. [Exchange supply 30d % change (rising=distribution risk)]"},{"id":"ssr","name":"Stablecoin Supply Ratio","category":"On-Chain","unit":"ratio","raw_value":4.99,"score":22,"source":"coinmetrics+coingecko","explain":"BTC mktcap / stablecoin mktcap. High = less dry powder to buy BTC."},{"id":"aad","name":"Active Address Divergence","category":"On-Chain","unit":"spread","raw_value":7.73,"score":24,"source":"coinmetrics/AdrActCnt","explain":"Price vs addr 30d % spread. Bearish divergence if price up, addrs declining. [Price +1.4% vs Addr -6.3% (30d). Bearish if price↑ addr↓]"},{"id":"miner_position","name":"Miner Position Index","category":"On-Chain","unit":"×","raw_value":1.017,"score":26,"source":"coinmetrics/IssTotUSD","explain":"Issuance/60d MA proxy for miner sell pressure. [30d/60d issuance ratio proxy for miner selling pressure]"},{"id":"funding_rate","name":"Funding Rate","category":"Derivatives","unit":"rate/8h","raw_value":0.00183,"score":26,"source":"Crypto.com funding_hist 12x8h mean","explain":"Perp swap 8h funding. >0.05%/8h=elevated, >0.10%/8h=extreme washout risk. [%/8h; 2.00% annualized]"},{"id":"open_interest","name":"Open Interest","category":"Derivatives","unit":"USD B","raw_value":6.13,"score":30,"source":"Crypto.com BTCUSD-PERP oi 6128 BTC","explain":"BTC perp OI as % of market cap. Elevated = larger cascade liquidation risk. [perp OI, thousand BTC]"},{"id":"futures_basis","name":"Futures Basis","category":"Derivatives","unit":"ann%","raw_value":4.53,"score":26,"source":"Deribit BTC-25SEP26 vs index ann","explain":"Annualized spot/futures basis. >20%=euphoric demand, backwardation=fear. [53d to expiry]"},{"id":"options_skew","name":"25D Options Skew","category":"Derivatives","unit":"%","raw_value":-5.05,"score":35,"source":"Deribit 25d call 30.7 vs put 35.7 IV","explain":"Deribit 25-delta put/call IV skew. Positive=call premium=complacent longs. [negative = puts bid = hedged]"},{"id":"put_call_ratio","name":"Put/Call Ratio","category":"Derivatives","unit":"ratio","raw_value":0.532,"score":58,"source":"Deribit option OI puts/calls","explain":"Deribit put/call OI ratio. Low=crowded calls/complacency. [114077P / 214395C; low = call-heavy]"},{"id":"liquidation_clusters","name":"Liquidation Risk","category":"Derivatives","unit":"USD B","raw_value":6.13,"score":33,"source":"perp OI scaled","explain":"Cascade liquidation risk from OI size and leverage concentration. [cascade proxy from Crypto.com perp OI]"},{"id":"iv_rv","name":"IV/RV Ratio","category":"Derivatives","unit":"ratio","raw_value":1.073,"score":35,"source":"Deribit ATM IV 32.3 / CM RV30 30.1","explain":"Implied vs Realized Vol. Low IV vs high RV = market underpricing risk. [25d ATM (2026-08-28)]"},{"id":"dxy","name":"DXY Index","category":"Macro","unit":"index","raw_value":99.2,"score":34,"source":"AV EURUSD 1.15279 proxy","explain":"US Dollar Index. Rising DXY = macro headwind for BTC. [source changed from FMP forex EURUSD 2026-07-24]"},{"id":"yield_10y","name":"10Y Treasury Yield","category":"Macro","unit":"%","raw_value":4.68,"score":48,"source":"FRED DGS10 2026-07-30","explain":"Rapid yield spikes tighten liquidity. Sustained uptrend = BTC headwind. [source changed from FMP treasury-rates 2026-07-24]"},{"id":"fed_funds","name":"Fed Funds Rate","category":"Macro","unit":"%","raw_value":3.63,"score":22,"source":"FRED DFF 2026-07-30","explain":"Hike cycle = risk-asset headwind. Pivot = historically bullish BTC. [source changed from FMP economics federalFunds 2026-07-24]"},{"id":"spx_correlation","name":"SPX Correlation 30d","category":"Macro","unit":"r","raw_value":0.237,"score":31,"source":"FRED SP500 vs CM BTC 30d","explain":"30d BTC-SPX rolling correlation. High = BTC vulnerable to equity selloffs. [live 30d log-return corr; was carried before 2026-07-24]"},{"id":"global_m2","name":"Global M2 Growth","category":"Macro","unit":"YoY%","raw_value":3.4,"score":27,"source":"prior","explain":"Expanding global M2 = liquidity tailwind for BTC (3-6 month lead). [carried]"},{"id":"usdt_issuance","name":"USDT Issuance","category":"Macro","unit":"USD B","raw_value":-4.021,"score":86,"source":"coinmetrics/usdt/SplyCur","explain":"30d USDT supply change. Contraction = reduced crypto inflows. [USDT 30d change $-4.02B (negative=outflow=bearish)]"},{"id":"fear_greed","name":"Fear & Greed Index","category":"Sentiment","unit":"0-100","raw_value":28,"score":18,"source":"alternative.me/fng","explain":"Composite sentiment. >75=extreme greed, >85 sustained=historic top proximity. [28/100, 7d avg 28, sustained greed: False]"},{"id":"social_volume","name":"Social Volume","category":"Sentiment","unit":"index","raw_value":37.0,"score":29,"source":"prior","explain":"BTC social media volume. Extreme spikes near highs precede corrections. [carried]"},{"id":"retail_lsr","name":"Retail Long/Short","category":"Sentiment","unit":"ratio","raw_value":1.93,"score":72,"source":"OKX BTC long-short-account-ratio","explain":"Retail L/S ratio. >2.0=crowded longs, washout risk elevated. [source changed from binance (451) 2026-07-24]"},{"id":"google_trends","name":"Google Trends BTC","category":"Sentiment","unit":"0-100","raw_value":37.0,"score":29,"source":"prior","explain":"Search interest 'Bitcoin'. Peak retail FOMO = cycle top proximity. [carried]"},{"id":"media_coverage","name":"Media Coverage","category":"Sentiment","unit":"index","raw_value":35.0,"score":30,"source":"prior","explain":"Mainstream media BTC coverage. Positive surge near highs = distribution. [carried]"},{"id":"weekly_rsi","name":"Weekly RSI","category":"Technical","unit":"0-100","raw_value":38.8,"score":21,"source":"coinmetrics/PriceUSD","explain":"RSI(14) on weekly candles. >85 has marked every major BTC cycle top. [RSI(14) on weekly-aggregated daily closes]"},{"id":"ma_200w_dev","name":"200W MA Deviation","category":"Technical","unit":"×","raw_value":0.998,"score":10,"source":"coinmetrics/PriceUSD","explain":"Price / 200-week MA ratio. >3.5× historically precedes 70%+ drawdowns. [Price $63,446 / 200W MA $63,543 = 1.00×]"},{"id":"rsi_divergence","name":"Bearish RSI Divergence","category":"Technical","unit":"bool","raw_value":1,"score":60,"source":"coinmetrics/PriceUSD","explain":"Price higher high + RSI lower high on weekly = momentum divergence. [Bearish: price new high + RSI did not confirm]"},{"id":"volume_divergence","name":"Volume Divergence","category":"Technical","unit":"bool","raw_value":0.5,"score":50,"source":"neutral","explain":"Price rising on declining 20d avg volume = weakening conviction."},{"id":"bollinger_width","name":"Bollinger Band Width","category":"Technical","unit":"%","raw_value":5.89,"score":31,"source":"coinmetrics/PriceUSD","explain":"4σ/20DMA bandwidth. Extreme expansion after prolonged squeeze = vol exhaustion. [BB Width 5.9% (4σ/20DMA). Extreme expansion after squeeze = risk]"}],"score_history":[{"timestamp":"2026-05-27 01:50 UTC","score":34.7,"label":"LOW","color":"#1976d2"},{"timestamp":"2026-05-29 19:16 UTC","score":34.7,"label":"LOW","color":"#1976d2"},{"timestamp":"2026-05-31 04:27 UTC","score":36.4,"label":"MODERATE","color":"#388e3c"},{"timestamp":"2026-05-31 10:10 UTC","score":35.6,"label":"MODERATE","color":"#388e3c"},{"timestamp":"2026-06-01 10:10 UTC","score":36.6,"label":"MODERATE","color":"#388e3c"},{"timestamp":"2026-06-02 10:07 UTC","score":35.2,"label":"MODERATE","color":"#388e3c"},{"timestamp":"2026-06-05 01:27 UTC","score":32.3,"label":"LOW","color":"#1976d2"},{"timestamp":"2026-06-05 10:10 UTC","score":31.9,"label":"LOW","color":"#1976d2"},{"timestamp":"2026-06-06 10:10 UTC","score":31.5,"label":"LOW","color":"#1976d2"},{"timestamp":"2026-06-07 10:10 UTC","score":31.5,"label":"LOW","color":"#1976d2"},{"timestamp":"2026-06-08 10:12 UTC","score":30.1,"label":"LOW","color":"#1976d2"},{"timestamp":"2026-06-09 10:10 UTC","score":30.8,"label":"LOW","color":"#1976d2"},{"timestamp":"2026-06-10 10:10 UTC","score":30.3,"label":"LOW","color":"#1976d2"},{"timestamp":"2026-06-11 10:55 UTC","score":30.3,"label":"LOW","color":"#1976d2"},{"timestamp":"2026-06-12 10:09 UTC","score":31.0,"label":"LOW","color":"#1976d2"},{"timestamp":"2026-06-13 10:13 UTC","score":30.2,"label":"LOW","color":"#1976d2"},{"timestamp":"2026-06-14 10:13 UTC","score":30.5,"label":"LOW","color":"#1976d2"},{"timestamp":"2026-06-15 10:07 UTC","score":30.1,"label":"LOW","color":"#1976d2"},{"timestamp":"2026-06-16 10:10 UTC","score":30.2,"label":"LOW","color":"#1976d2"},{"timestamp":"2026-06-17 10:08 UTC","score":30.1,"label":"LOW","color":"#1976d2"},{"timestamp":"2026-06-18 10:08 UTC","score":29.7,"label":"LOW","color":"#1976d2"},{"timestamp":"2026-06-19 10:07 UTC","score":29.5,"label":"LOW","color":"#1976d2"},{"timestamp":"2026-06-20 10:08 UTC","score":29.5,"label":"LOW","color":"#1976d2"},{"timestamp":"2026-06-21 10:08 UTC","score":29.3,"label":"LOW","color":"#1976d2"},{"timestamp":"2026-06-22 10:07 UTC","score":27.9,"label":"LOW","color":"#1976d2"},{"timestamp":"2026-06-23 10:06 UTC","score":28.5,"label":"LOW","color":"#1976d2"},{"timestamp":"2026-06-24 10:08 UTC","score":28.5,"label":"LOW","color":"#1976d2"},{"timestamp":"2026-06-25 10:08 UTC","score":28.1,"label":"LOW","color":"#1976d2"},{"timestamp":"2026-06-25 21:16 UTC","score":28.1,"label":"LOW","color":"#1976d2"},{"timestamp":"2026-06-26 10:07 UTC","score":27.8,"label":"LOW","color":"#1976d2"},{"timestamp":"2026-06-27 10:07 UTC","score":27.4,"label":"LOW","color":"#1976d2"},{"timestamp":"2026-06-28 10:08 UTC","score":27.3,"label":"LOW","color":"#1976d2"},{"timestamp":"2026-06-29 10:07 UTC","score":26.6,"label":"LOW","color":"#1976d2"},{"timestamp":"2026-06-30 10:07 UTC","score":26.9,"label":"LOW","color":"#1976d2"},{"timestamp":"2026-07-01 10:07 UTC","score":26.5,"label":"LOW","color":"#1976d2"},{"timestamp":"2026-07-02 10:07 UTC","score":26.9,"label":"LOW","color":"#1976d2"},{"timestamp":"2026-07-03 10:07 UTC","score":26.8,"label":"LOW","color":"#1976d2"},{"timestamp":"2026-07-04 10:06 UTC","score":27.0,"label":"LOW","color":"#1976d2"},{"timestamp":"2026-07-05 10:07 UTC","score":27.4,"label":"LOW","color":"#1976d2"},{"timestamp":"2026-07-06 10:09 UTC","score":27.5,"label":"LOW","color":"#1976d2"},{"timestamp":"2026-07-07 10:07 UTC","score":27.8,"label":"LOW","color":"#1976d2"},{"timestamp":"2026-07-08 10:07 UTC","score":28.4,"label":"LOW","color":"#1976d2"},{"timestamp":"2026-07-10 15:56 UTC","score":28.8,"label":"LOW","color":"#1976d2"},{"timestamp":"2026-07-10 16:15 UTC","score":28.8,"label":"LOW","color":"#1976d2"},{"timestamp":"2026-07-11 10:08 UTC","score":29.2,"label":"LOW","color":"#1976d2"},{"timestamp":"2026-07-12 10:08 UTC","score":29.8,"label":"LOW","color":"#1976d2"},{"timestamp":"2026-07-13 10:08 UTC","score":30.1,"label":"LOW","color":"#1976d2"},{"timestamp":"2026-07-14 01:38 UTC","score":30.3,"label":"LOW","color":"#1976d2"},{"timestamp":"2026-07-15 10:09 UTC","score":30.8,"label":"LOW","color":"#1976d2"},{"timestamp":"2026-07-16 10:08 UTC","score":30.4,"label":"LOW","color":"#1976d2"},{"timestamp":"2026-07-17 11:00 UTC","score":29.9,"label":"LOW","color":"#1976d2"},{"timestamp":"2026-07-18 10:09 UTC","score":31.2,"label":"LOW","color":"#1976d2"},{"timestamp":"2026-07-19 10:08 UTC","score":32.2,"label":"LOW","color":"#1976d2"},{"timestamp":"2026-07-20 10:08 UTC","score":31.9,"label":"LOW","color":"#1976d2"},{"timestamp":"2026-07-21 10:09 UTC","score":31.2,"label":"LOW","color":"#1976d2"},{"timestamp":"2026-07-22 10:08 UTC","score":29.7,"label":"LOW","color":"#1976d2"},{"timestamp":"2026-07-23 10:08 UTC","score":28.9,"label":"LOW","color":"#1976d2"},{"timestamp":"2026-07-24 10:09 UTC","score":30.8,"label":"LOW","color":"#1976d2"},{"timestamp":"2026-07-25 10:06 UTC","score":32.7,"label":"LOW","color":"#1976d2"},{"timestamp":"2026-07-26 10:06 UTC","score":31.7,"label":"LOW","color":"#1976d2"},{"timestamp":"2026-07-27 10:06 UTC","score":32.2,"label":"LOW","color":"#1976d2"},{"timestamp":"2026-07-28 10:06 UTC","score":30.7,"label":"LOW","color":"#1976d2"},{"timestamp":"2026-07-29 10:06 UTC","score":30.9,"label":"LOW","color":"#1976d2"},{"timestamp":"2026-07-30 10:06 UTC","score":32.7,"label":"LOW","color":"#1976d2"},{"timestamp":"2026-07-31 10:06 UTC","score":31.8,"label":"LOW","color":"#1976d2"},{"timestamp":"2026-08-01 10:07 UTC","score":32.1,"label":"LOW","color":"#1976d2"},{"timestamp":"2026-08-02 10:06 UTC","score":32.2,"label":"LOW","color":"#1976d2"},{"timestamp":"2026-08-03 10:06 UTC","score":32.0,"label":"LOW","color":"#1976d2"}]};
+const DATA = {"generated":"2026-08-04 10:07 UTC","btc_price":63460.0481116306,"composite":{"score":32.1,"label":"LOW","color":"#1976d2","action":"LOW: Favorable conditions. Full positioning appropriate. Bull market signals dominant."},"category_scores":{"On-Chain":26.1,"Derivatives":35.4,"Macro":42.3,"Sentiment":33.0,"Technical":34.8},"metrics":[{"id":"nupl","name":"NUPL","category":"On-Chain","unit":"ratio","raw_value":0.168607,"score":17,"source":"coinmetrics/CapMVRVCur","explain":"Net Unrealized Profit/Loss via MVRV. Zones: <0=bottom, 0-0.25=hope, 0.25-0.5=belief, 0.5-0.75=optimism, >0.75=euphoria. [NUPL=(MVRV-1)/MVRV. <0=bottom, 0.25=hope, 0.5=belief, 0.75=euphoria]"},{"id":"mvrv_z","name":"MVRV-Z Score","category":"On-Chain","unit":"ratio","raw_value":1.202801,"score":12,"source":"coinmetrics/CapMVRVCur","explain":"Market Value to Realized Value. <1=undervalued, 1-2=fair value, 2-3.5=overvalued, >3.5=extreme (historic tops 3.5-7.0). [Using MVRV ratio (Z-score proxy; CapRealUSD unavailable on free tier)]"},{"id":"puell","name":"Puell Multiple","category":"On-Chain","unit":"×","raw_value":1.059172,"score":22,"source":"coinmetrics/IssTotUSD","explain":"Daily miner revenue / 60d MA. <0.5=capitulation, 1-2=neutral, 2-4=elevated, >4=extreme top. [60d MA proxy (ideal: 365d)]"},{"id":"pi_cycle","name":"Pi Cycle Top","category":"On-Chain","unit":"gap%","raw_value":59.0,"score":26,"source":"coinmetrics/PriceUSD","explain":"Gap between 111DMA and 2×350DMA. Crossover = historic top signal within days. [Gap to crossover: 59.0% (0%=signal)]"},{"id":"reserve_risk","name":"Reserve Risk","category":"On-Chain","unit":"proxy","raw_value":0.197,"score":10,"source":"coinmetrics","explain":"MVRV × price/365DMA proxy. High = confidence risk at elevated prices. [Proxy: (MVRV/3)×(price/365DMA/1.5); true Reserve Risk needs UTXO data]"},{"id":"rhodl","name":"RHODL Ratio","category":"On-Chain","unit":"proxy","raw_value":0.993,"score":15,"source":"coinmetrics","explain":"MVRV × addr-trend proxy for short-term vs long-term holder dominance. [MVRV × addr-trend proxy; true RHODL needs UTXO age bands]"},{"id":"sopr","name":"SOPR","category":"On-Chain","unit":"ratio","raw_value":0.9845,"score":28,"source":"coinmetrics/PriceUSD","explain":"7d/21d price ratio proxy for on-chain profit-taking. >1.05 = elevated profit realization. [7d/21d price ratio proxy; true SOPR needs UTXO spend data]"},{"id":"cdd","name":"Coin Days Destroyed","category":"On-Chain","unit":"spike","raw_value":0.5,"score":50,"source":"blockchain.com","explain":"7DMA/30DMA CDD ratio. Spikes signal LTH distribution near tops."},{"id":"exchange_inflows","name":"Exchange Net Inflows","category":"On-Chain","unit":"USD B","raw_value":0.0916,"score":41,"source":"coinmetrics/FlowInExUSD-FlowOutExUSD","explain":"Net BTC exchange flow (inflows-outflows). Positive = sell pressure. [7d avg net exchange flow: $+0.092B (positive=sell pressure)]"},{"id":"lth_supply","name":"Exchange Supply Delta","category":"On-Chain","unit":"%","raw_value":0.785,"score":41,"source":"coinmetrics/SplyExNtv","explain":"SplyExNtv 30d % change. Rising = distribution into strength. [Exchange supply 30d % change (rising=distribution risk)]"},{"id":"ssr","name":"Stablecoin Supply Ratio","category":"On-Chain","unit":"ratio","raw_value":4.99,"score":22,"source":"coinmetrics+coingecko","explain":"BTC mktcap / stablecoin mktcap. High = less dry powder to buy BTC."},{"id":"aad","name":"Active Address Divergence","category":"On-Chain","unit":"spread","raw_value":-34.29,"score":28,"source":"coinmetrics/AdrActCnt","explain":"Price vs addr 30d % spread. Bearish divergence if price up, addrs declining. [Price +0.6% vs Addr +34.9% (30d). Bearish if price↑ addr↓]"},{"id":"miner_position","name":"Miner Position Index","category":"On-Chain","unit":"×","raw_value":1.059,"score":27,"source":"coinmetrics/IssTotUSD","explain":"Issuance/60d MA proxy for miner sell pressure. [30d/60d issuance ratio proxy for miner selling pressure]"},{"id":"funding_rate","name":"Funding Rate","category":"Derivatives","unit":"rate/8h","raw_value":0.001463,"score":26,"source":"Crypto.com funding_hist 12x8h mean","explain":"Perp swap 8h funding. >0.05%/8h=elevated, >0.10%/8h=extreme washout risk. [%/8h; 1.60% annualized]"},{"id":"open_interest","name":"Open Interest","category":"Derivatives","unit":"USD B","raw_value":6.03,"score":29,"source":"Crypto.com BTCUSD-PERP oi 6029 BTC","explain":"BTC perp OI as % of market cap. Elevated = larger cascade liquidation risk. [perp OI, thousand BTC]"},{"id":"futures_basis","name":"Futures Basis","category":"Derivatives","unit":"ann%","raw_value":4.6,"score":26,"source":"Deribit BTC-25SEP26 vs index ann","explain":"Annualized spot/futures basis. >20%=euphoric demand, backwardation=fear. [52d to expiry]"},{"id":"options_skew","name":"25D Options Skew","category":"Derivatives","unit":"%","raw_value":-4.05,"score":37,"source":"Deribit 25d call 29.7 vs put 33.8 IV","explain":"Deribit 25-delta put/call IV skew. Positive=call premium=complacent longs. [negative = puts bid = hedged]"},{"id":"put_call_ratio","name":"Put/Call Ratio","category":"Derivatives","unit":"ratio","raw_value":0.517,"score":59,"source":"Deribit option OI puts/calls","explain":"Deribit put/call OI ratio. Low=crowded calls/complacency. [113311P / 219075C; low = call-heavy]"},{"id":"liquidation_clusters","name":"Liquidation Risk","category":"Derivatives","unit":"USD B","raw_value":6.03,"score":32,"source":"perp OI scaled","explain":"Cascade liquidation risk from OI size and leverage concentration. [cascade proxy from Crypto.com perp OI]"},{"id":"iv_rv","name":"IV/RV Ratio","category":"Derivatives","unit":"ratio","raw_value":1.031,"score":39,"source":"Deribit ATM IV 30.9 / CM RV30 30.0","explain":"Implied vs Realized Vol. Low IV vs high RV = market underpricing risk. [24d ATM (2026-08-28)]"},{"id":"dxy","name":"DXY Index","category":"Macro","unit":"index","raw_value":99.3,"score":34,"source":"AV EURUSD 1.15117 proxy","explain":"US Dollar Index. Rising DXY = macro headwind for BTC. [source changed from FMP forex EURUSD 2026-07-24]"},{"id":"yield_10y","name":"10Y Treasury Yield","category":"Macro","unit":"%","raw_value":4.75,"score":48,"source":"FRED DGS10 2026-07-31","explain":"Rapid yield spikes tighten liquidity. Sustained uptrend = BTC headwind. [source changed from FMP treasury-rates 2026-07-24]"},{"id":"fed_funds","name":"Fed Funds Rate","category":"Macro","unit":"%","raw_value":3.63,"score":22,"source":"FRED DFF 2026-07-31","explain":"Hike cycle = risk-asset headwind. Pivot = historically bullish BTC. [source changed from FMP economics federalFunds 2026-07-24]"},{"id":"spx_correlation","name":"SPX Correlation 30d","category":"Macro","unit":"r","raw_value":0.318,"score":37,"source":"FRED SP500 vs CM BTC 30d","explain":"30d BTC-SPX rolling correlation. High = BTC vulnerable to equity selloffs. [live 30d log-return corr; was carried before 2026-07-24]"},{"id":"global_m2","name":"Global M2 Growth","category":"Macro","unit":"YoY%","raw_value":3.4,"score":27,"source":"prior","explain":"Expanding global M2 = liquidity tailwind for BTC (3-6 month lead). [carried]"},{"id":"usdt_issuance","name":"USDT Issuance","category":"Macro","unit":"USD B","raw_value":-4.03,"score":86,"source":"coinmetrics/usdt/SplyCur","explain":"30d USDT supply change. Contraction = reduced crypto inflows. [USDT 30d change $-4.03B (negative=outflow=bearish)]"},{"id":"fear_greed","name":"Fear & Greed Index","category":"Sentiment","unit":"0-100","raw_value":25,"score":15,"source":"alternative.me/fng","explain":"Composite sentiment. >75=extreme greed, >85 sustained=historic top proximity. [25/100, 7d avg 27, sustained greed: False]"},{"id":"social_volume","name":"Social Volume","category":"Sentiment","unit":"index","raw_value":37.0,"score":29,"source":"prior","explain":"BTC social media volume. Extreme spikes near highs precede corrections. [carried]"},{"id":"retail_lsr","name":"Retail Long/Short","category":"Sentiment","unit":"ratio","raw_value":1.64,"score":62,"source":"OKX BTC long-short-account-ratio","explain":"Retail L/S ratio. >2.0=crowded longs, washout risk elevated. [source changed from binance (451) 2026-07-24]"},{"id":"google_trends","name":"Google Trends BTC","category":"Sentiment","unit":"0-100","raw_value":37.0,"score":29,"source":"prior","explain":"Search interest 'Bitcoin'. Peak retail FOMO = cycle top proximity. [carried]"},{"id":"media_coverage","name":"Media Coverage","category":"Sentiment","unit":"index","raw_value":35.0,"score":30,"source":"prior","explain":"Mainstream media BTC coverage. Positive surge near highs = distribution. [carried]"},{"id":"weekly_rsi","name":"Weekly RSI","category":"Technical","unit":"0-100","raw_value":39.6,"score":22,"source":"coinmetrics/PriceUSD","explain":"RSI(14) on weekly candles. >85 has marked every major BTC cycle top. [RSI(14) on weekly-aggregated daily closes]"},{"id":"ma_200w_dev","name":"200W MA Deviation","category":"Technical","unit":"×","raw_value":0.995,"score":10,"source":"coinmetrics/PriceUSD","explain":"Price / 200-week MA ratio. >3.5× historically precedes 70%+ drawdowns. [Price $63,460 / 200W MA $63,761 = 1.00×]"},{"id":"rsi_divergence","name":"Bearish RSI Divergence","category":"Technical","unit":"bool","raw_value":1,"score":60,"source":"coinmetrics/PriceUSD","explain":"Price higher high + RSI lower high on weekly = momentum divergence. [Bearish: price new high + RSI did not confirm]"},{"id":"volume_divergence","name":"Volume Divergence","category":"Technical","unit":"bool","raw_value":0.5,"score":50,"source":"neutral","explain":"Price rising on declining 20d avg volume = weakening conviction."},{"id":"bollinger_width","name":"Bollinger Band Width","category":"Technical","unit":"%","raw_value":5.99,"score":32,"source":"coinmetrics/PriceUSD","explain":"4σ/20DMA bandwidth. Extreme expansion after prolonged squeeze = vol exhaustion. [BB Width 6.0% (4σ/20DMA). Extreme expansion after squeeze = risk]"}],"score_history":[{"timestamp":"2026-05-27 01:50 UTC","score":34.7,"label":"LOW","color":"#1976d2"},{"timestamp":"2026-05-29 19:16 UTC","score":34.7,"label":"LOW","color":"#1976d2"},{"timestamp":"2026-05-31 04:27 UTC","score":36.4,"label":"MODERATE","color":"#388e3c"},{"timestamp":"2026-05-31 10:10 UTC","score":35.6,"label":"MODERATE","color":"#388e3c"},{"timestamp":"2026-06-01 10:10 UTC","score":36.6,"label":"MODERATE","color":"#388e3c"},{"timestamp":"2026-06-02 10:07 UTC","score":35.2,"label":"MODERATE","color":"#388e3c"},{"timestamp":"2026-06-05 01:27 UTC","score":32.3,"label":"LOW","color":"#1976d2"},{"timestamp":"2026-06-05 10:10 UTC","score":31.9,"label":"LOW","color":"#1976d2"},{"timestamp":"2026-06-06 10:10 UTC","score":31.5,"label":"LOW","color":"#1976d2"},{"timestamp":"2026-06-07 10:10 UTC","score":31.5,"label":"LOW","color":"#1976d2"},{"timestamp":"2026-06-08 10:12 UTC","score":30.1,"label":"LOW","color":"#1976d2"},{"timestamp":"2026-06-09 10:10 UTC","score":30.8,"label":"LOW","color":"#1976d2"},{"timestamp":"2026-06-10 10:10 UTC","score":30.3,"label":"LOW","color":"#1976d2"},{"timestamp":"2026-06-11 10:55 UTC","score":30.3,"label":"LOW","color":"#1976d2"},{"timestamp":"2026-06-12 10:09 UTC","score":31.0,"label":"LOW","color":"#1976d2"},{"timestamp":"2026-06-13 10:13 UTC","score":30.2,"label":"LOW","color":"#1976d2"},{"timestamp":"2026-06-14 10:13 UTC","score":30.5,"label":"LOW","color":"#1976d2"},{"timestamp":"2026-06-15 10:07 UTC","score":30.1,"label":"LOW","color":"#1976d2"},{"timestamp":"2026-06-16 10:10 UTC","score":30.2,"label":"LOW","color":"#1976d2"},{"timestamp":"2026-06-17 10:08 UTC","score":30.1,"label":"LOW","color":"#1976d2"},{"timestamp":"2026-06-18 10:08 UTC","score":29.7,"label":"LOW","color":"#1976d2"},{"timestamp":"2026-06-19 10:07 UTC","score":29.5,"label":"LOW","color":"#1976d2"},{"timestamp":"2026-06-20 10:08 UTC","score":29.5,"label":"LOW","color":"#1976d2"},{"timestamp":"2026-06-21 10:08 UTC","score":29.3,"label":"LOW","color":"#1976d2"},{"timestamp":"2026-06-22 10:07 UTC","score":27.9,"label":"LOW","color":"#1976d2"},{"timestamp":"2026-06-23 10:06 UTC","score":28.5,"label":"LOW","color":"#1976d2"},{"timestamp":"2026-06-24 10:08 UTC","score":28.5,"label":"LOW","color":"#1976d2"},{"timestamp":"2026-06-25 10:08 UTC","score":28.1,"label":"LOW","color":"#1976d2"},{"timestamp":"2026-06-25 21:16 UTC","score":28.1,"label":"LOW","color":"#1976d2"},{"timestamp":"2026-06-26 10:07 UTC","score":27.8,"label":"LOW","color":"#1976d2"},{"timestamp":"2026-06-27 10:07 UTC","score":27.4,"label":"LOW","color":"#1976d2"},{"timestamp":"2026-06-28 10:08 UTC","score":27.3,"label":"LOW","color":"#1976d2"},{"timestamp":"2026-06-29 10:07 UTC","score":26.6,"label":"LOW","color":"#1976d2"},{"timestamp":"2026-06-30 10:07 UTC","score":26.9,"label":"LOW","color":"#1976d2"},{"timestamp":"2026-07-01 10:07 UTC","score":26.5,"label":"LOW","color":"#1976d2"},{"timestamp":"2026-07-02 10:07 UTC","score":26.9,"label":"LOW","color":"#1976d2"},{"timestamp":"2026-07-03 10:07 UTC","score":26.8,"label":"LOW","color":"#1976d2"},{"timestamp":"2026-07-04 10:06 UTC","score":27.0,"label":"LOW","color":"#1976d2"},{"timestamp":"2026-07-05 10:07 UTC","score":27.4,"label":"LOW","color":"#1976d2"},{"timestamp":"2026-07-06 10:09 UTC","score":27.5,"label":"LOW","color":"#1976d2"},{"timestamp":"2026-07-07 10:07 UTC","score":27.8,"label":"LOW","color":"#1976d2"},{"timestamp":"2026-07-08 10:07 UTC","score":28.4,"label":"LOW","color":"#1976d2"},{"timestamp":"2026-07-10 15:56 UTC","score":28.8,"label":"LOW","color":"#1976d2"},{"timestamp":"2026-07-10 16:15 UTC","score":28.8,"label":"LOW","color":"#1976d2"},{"timestamp":"2026-07-11 10:08 UTC","score":29.2,"label":"LOW","color":"#1976d2"},{"timestamp":"2026-07-12 10:08 UTC","score":29.8,"label":"LOW","color":"#1976d2"},{"timestamp":"2026-07-13 10:08 UTC","score":30.1,"label":"LOW","color":"#1976d2"},{"timestamp":"2026-07-14 01:38 UTC","score":30.3,"label":"LOW","color":"#1976d2"},{"timestamp":"2026-07-15 10:09 UTC","score":30.8,"label":"LOW","color":"#1976d2"},{"timestamp":"2026-07-16 10:08 UTC","score":30.4,"label":"LOW","color":"#1976d2"},{"timestamp":"2026-07-17 11:00 UTC","score":29.9,"label":"LOW","color":"#1976d2"},{"timestamp":"2026-07-18 10:09 UTC","score":31.2,"label":"LOW","color":"#1976d2"},{"timestamp":"2026-07-19 10:08 UTC","score":32.2,"label":"LOW","color":"#1976d2"},{"timestamp":"2026-07-20 10:08 UTC","score":31.9,"label":"LOW","color":"#1976d2"},{"timestamp":"2026-07-21 10:09 UTC","score":31.2,"label":"LOW","color":"#1976d2"},{"timestamp":"2026-07-22 10:08 UTC","score":29.7,"label":"LOW","color":"#1976d2"},{"timestamp":"2026-07-23 10:08 UTC","score":28.9,"label":"LOW","color":"#1976d2"},{"timestamp":"2026-07-24 10:09 UTC","score":30.8,"label":"LOW","color":"#1976d2"},{"timestamp":"2026-07-25 10:06 UTC","score":32.7,"label":"LOW","color":"#1976d2"},{"timestamp":"2026-07-26 10:06 UTC","score":31.7,"label":"LOW","color":"#1976d2"},{"timestamp":"2026-07-27 10:06 UTC","score":32.2,"label":"LOW","color":"#1976d2"},{"timestamp":"2026-07-28 10:06 UTC","score":30.7,"label":"LOW","color":"#1976d2"},{"timestamp":"2026-07-29 10:06 UTC","score":30.9,"label":"LOW","color":"#1976d2"},{"timestamp":"2026-07-30 10:06 UTC","score":32.7,"label":"LOW","color":"#1976d2"},{"timestamp":"2026-07-31 10:06 UTC","score":31.8,"label":"LOW","color":"#1976d2"},{"timestamp":"2026-08-01 10:07 UTC","score":32.1,"label":"LOW","color":"#1976d2"},{"timestamp":"2026-08-02 10:06 UTC","score":32.2,"label":"LOW","color":"#1976d2"},{"timestamp":"2026-08-03 10:06 UTC","score":32.0,"label":"LOW","color":"#1976d2"},{"timestamp":"2026-08-04 10:07 UTC","score":32.1,"label":"LOW","color":"#1976d2"}]};
 
 const INTERP = {
   nupl: "< 0: Bottom / Capitulation\n0 – 0.25: Hope (recovery phase)\n0.25 – 0.5: Belief\n0.5 – 0.75: Optimism / Complacency\n> 0.75: Euphoria — historic top zone",
